@@ -1,0 +1,236 @@
+/** TITLES */
+
+.titleA h2 {
+	height: 50px;
+}
+
+.titleA b {
+	position: absolute;
+	left: -10000px;
+}
+
+#title1 { background: url(../img/homepage06.jpg) no-repeat left top; }
+#title2 { background: url(../img/homepage10.jpg) no-repeat left top; }
+#title3 { background: url(../img/homepage12.jpg) no-repeat left top; }
+
+#title4 { background: url(../img/homepage17.jpg) no-repeat left top; }
+#title5 { background: url(../img/homepage18.jpg) no-repeat left top; }
+
+#title6 {
+	height: 37px;
+	background: url(../img/homepage22.jpg) no-repeat left top;
+}
+
+#title6 b {
+	position: absolute;
+	left: -10000px;
+}
+
+#title7 {
+	height: 37px;
+	background: url(../img/homepage27.jpg) no-repeat left top;
+}
+
+#title7 b {
+	position: absolute;
+	left: -10000px;
+}
+
+/** BASIC */
+
+html, body {
+	height: 100%;
+}
+
+/** HEADER */
+
+#header {
+	width: 904px;
+	height: 135px;
+	margin: 0px auto;
+}
+
+#logo {
+	float: left;
+	width: 435px;
+	height: 135px;
+	background: url(../img/homepage01.jpg) no-repeat left top;
+}
+
+#logo h1, #logo h2 {
+	position: absolute;
+	left: -10000px;
+}
+
+/** MAIN-MENU */
+
+#main-menu {
+	float: left;
+}
+
+#main-menu ul {
+	margin: 0px;
+	padding: 0px;
+	list-style: none;
+}
+
+#main-menu li {
+	display: inline;
+}
+
+#main-menu a {
+	display: block;
+	float: left;
+	height: 135px;
+}
+
+#main-menu b {
+	position: absolute;
+	left: -10000px;
+}
+
+#main-menu1 {
+	width: 120px;
+	background: url(../img/homepage02.jpg) no-repeat left top;
+}
+
+#main-menu2 {
+	width: 110px;
+	background: url(../img/homepage03.jpg) no-repeat left top;
+}
+
+#main-menu3 {
+	width: 110px;
+	background: url(../img/homepage04.jpg) no-repeat left top;
+}
+
+#main-menu4 {
+	width: 129px;
+	background: url(../img/homepage05.jpg) no-repeat left top;
+}
+
+/** CONTENT */
+
+#content {
+	width: 904px;
+	margin: 0px auto;
+}
+
+/** 3-COLUMN LAYOUT */
+
+.three-cols {
+}
+
+.three-cols .colA {
+	float: left;
+	width: 166px;
+	padding: 11px 0px 0px 58px;
+}
+
+.three-cols .colB {
+	float: left;
+	width: 372px;
+	padding: 18px 23px 0px 23px;
+}
+
+.three-cols .colC {
+	float: left;
+	width: 224px;
+	padding: 11px 0px 0px 0px;
+}
+
+/** 2-COLUMN LAYOUT */
+
+.two-cols {
+}
+
+.two-cols .colA {
+	float: left;
+	width: 166px;
+	padding: 11px 0px 0px 58px;
+}
+
+.two-cols .colB {
+	float: left;
+	width: 596px;
+	padding: 18px 0px 0px 23px;
+}
+
+/** BOX1 */
+
+#box1 {
+	padding-bottom: 15px;
+}
+
+#box1 .content {
+	padding: 0px 11px 0px 13px;
+}
+
+#form1 {
+}
+
+#imagefield1 {
+	float: right;
+	margin-top: 8px;
+}
+
+#box1 p {
+	margin: 8px 0px 0px 0px;
+}
+
+#box1 label {
+	display: block;
+}
+
+/** BOX2 */
+
+#box2 {
+}
+
+/** BOX3 */
+
+#box3 {
+}
+
+/** BOX4 */
+
+#box4 {
+	padding-bottom: 15px;
+}
+
+/** BOX5 */
+
+#box5 {
+}
+
+/** BOX6 */
+
+#box6 {
+}
+
+#box6 .content {
+	padding: 5px 0px 0px 19px;
+}
+
+/** BOX7 */
+
+#box7 {
+}
+
+#box7 .content {
+	padding: 5px 0px 0px 19px;
+}
+
+/** BOX8 */
+
+#box8 {
+}
+
+#box8 .content {
+	padding: 5px 0px 0px 19px;
+}
+
+/** BOX9 */
+
+#box9 {
+}
