@@ -40,6 +40,16 @@ class Character extends AppModel {
             'className'     => 'Rank',
             'foreignKey'    => 'rank_id',
             'dependent'     => true
+        ),
+		'Area' => array(
+            'className'     => 'Area',
+            'foreignKey'    => 'area_id',
+            'dependent'     => true
+        ),
+        'User' => array(
+            'className'     => 'User',
+            'foreignKey'    => 'user_id',
+            'dependent'     => true
         )
     );
 

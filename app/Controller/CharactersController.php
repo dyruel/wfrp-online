@@ -34,6 +34,37 @@ class CharactersController extends AppController {
    * @return void
    */
 	public function index() {
+		/*
+	    $t_data = $this->User->find('first', array(
+	    	'contain' => false,
+	    	'fields' => array('*'),
+	        'conditions' => array(
+        		'User.id' => $this->Auth->user('id'),
+        		'Character.campaign_id = User.campaign_id'
+    		),
+	    	'joins' => array(
+	    		array(
+		    		'table' => 'characters',
+		    		'alias' => 'Character',
+		    		'type' => 'LEFT',
+		        	'conditions' => array('Character.user_id = User.id')
+	    		),    			    		
+	    		array(
+		    		'table' => 'careers',
+		    		'alias' => 'Career',
+		    		'type' => 'LEFT',
+		        	'conditions' => array('Career.id = Character.career_id')
+	    		),
+	    		array(
+		    		'table' => 'races',
+		    		'alias' => 'Race',
+		    		'type' => 'LEFT',
+		        	'conditions' => array('Race.id = Character.race_id')
+	    		)
+			)
+	      ));		
+		  */
+	
 
     $user = $this->User->find('first', array(
         'conditions' => array('User.id' => $this->Auth->user('id'),
@@ -66,12 +97,15 @@ class CharactersController extends AppController {
 
       ));
 
+
+
     $t_data['Character']['profile'] = Character::profileFormat($t_data['Character']['profile']);
     $t_data['Character']['money'] = Character::moneyFormat($t_data['Character']['money']);
     $t_data['Career']['profile'] = Career::profileFormat($t_data['Career']['profile']);
 
     $this->set('t_data', $t_data);
     $this->set('t_statsStr', ToolBox::statsStr());
+
 /*
     pr($user);
     pr($t_data);

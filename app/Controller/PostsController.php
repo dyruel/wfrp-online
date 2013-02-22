@@ -4,7 +4,35 @@ class PostsController extends AppController {
     public $helpers = array('Html', 'Form');
 
     public function index() {
-         $this->set('posts', $this->Post->find('all'));
+ //        $this->set('posts', $this->Post->find('all'));
+	    $user = $this->User->find('first', array(
+	        'conditions' => array('User.id' => $this->Auth->user('id'),
+	        ),
+	        'contain' => false
+	      ));
+	    if (!$user) {
+	        throw new NotFoundException(__('Invalid user'));
+	    }
+	
+		$t_data = $this->Post->find('all', array(
+	        'conditions' => array('Post.area_id' => $user['User']['area_id']
+	        ),
+	
+	        'contain' => array(
+	            'Race',
+	            'Career',
+	            'Rank',
+	            'CharactersSkillsSkillspec' => array(
+	              'Skill',
+	              'Skillspec'
+	            ),
+	            'CharactersTalentsTalentspec' => array(
+	              'Talent',
+	              'Talentspec'
+	            ),
+	         )
+	
+		));
     }
 
     public function view($id = null) {
