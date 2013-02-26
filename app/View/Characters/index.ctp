@@ -1,6 +1,6 @@
 <?php 
 
-$this->extend('/Common/twocol');
+// $this->extend('/Common/twocol');
 
 echo $this->Html->script('character', array('inline' => false)); 
 

@@ -1,10 +1,45 @@
 <?php
 
+// App::uses('HTMLPurifier.auto', 'Vendor/htmlpurifier/library/');
+
+App::import('Vendor', null, array
+(
+    'file' => 'htmlpurifier'.DS.'library'.DS.'HTMLPurifier.auto.php'
+));
+
+
 class PostsController extends AppController {
-    public $helpers = array('Html', 'Form');
+    public $helpers = array('Tinymce');
+	/*
+	public $arrayBBCode=array(
+	    ''=>         array('type'=>BBCODE_TYPE_ROOT,  
+	                       'childs'=>'!i'),
+	    'd100'=>        array('type'=>BBCODE_TYPE_NOARG, 
+	                       'open_tag'=>'<b>', 
+	                       'close_tag'=>'</b>'),
+	    'u'=>        array('type'=>BBCODE_TYPE_NOARG, 
+	                       'open_tag'=>'<u>', 
+	                       'close_tag'=>'</u>', 
+	                       'flags'=>BBCODE_FLAGS_SMILEYS_OFF),
+	    'i'=>        array('type'=>BBCODE_TYPE_NOARG, 
+	                       'open_tag'=>'<i>', 
+	                       'close_tag'=>'</i>', 
+	                       'childs'=>'b'),
+	);
+*/
 
     public function index() {
- //        $this->set('posts', $this->Post->find('all'));
+    	 if ($this->request->is('post')) {
+    	 	$config = HTMLPurifier_Config::createDefault();
+    	 	$purifier = new HTMLPurifier($config);
+			pr($this->request->data);
+//			$this->request->data['Post']['title'] = $purifier->purify($this->request->data['Post']['title']);
+			$this->request->data['Post']['content'] = $purifier->purify($this->request->data['Post']['content']);
+            pr($this->request->data);
+
+        }
+         $this->set('posts', $this->Post->find('all'));
+ /*
 	    $user = $this->User->find('first', array(
 	        'conditions' => array('User.id' => $this->Auth->user('id'),
 	        ),
@@ -33,6 +68,7 @@ class PostsController extends AppController {
 	         )
 	
 		));
+  * */
     }
 
     public function view($id = null) {

@@ -1,8 +1,11 @@
 <!-- File: /app/View/Posts/index.ctp -->
 
 <?php 
-$this->extend('/Common/threecol');
+//$this->extend('/Common/threecol');
 ?>
+
+
+
 
 <h1>Blog posts</h1>
 <p><?php echo $this->Html->link('Add Post', array('action' => 'add')); ?></p>
@@ -23,7 +26,7 @@ $this->extend('/Common/threecol');
     <tr>
         <td><?php echo $post['Post']['id']; ?></td>
         <td>
-            <?php echo $this->Html->link($post['Post']['title'], array('action' => 'view', $post['Post']['id'])); ?>
+            <?php echo $this->Html->link($post['Post']['body'], array('action' => 'view', $post['Post']['id'])); ?>
         </td>
         <td><?php echo $post['Area']['name']; ?></td>
         <td><?php echo $post['Character']['name']; ?></td>
@@ -42,3 +45,21 @@ $this->extend('/Common/threecol');
     </tr>
     <?php endforeach; ?>
 </table>
+
+<div class="posts form">
+<?php echo $this->Form->create('Post');?>
+    <fieldset>
+        <legend><?php echo __('Add Post'); ?></legend>
+    <?php
+ //       echo $this->Form->input('title');
+        echo $this->Tinymce->input('Post.content', array(
+            'label' => 'Content'
+            ),array(
+                'language'=>'en'
+            ),
+            'rpg'
+        );
+    ?>
+    </fieldset>
+<?php echo $this->Form->end(__('Submit'));?>
+</div>
