@@ -6,10 +6,11 @@ App::import('Vendor', null, array
 (
     'file' => 'htmlpurifier'.DS.'library'.DS.'HTMLPurifier.auto.php'
 ));
-
+App::uses('ToolBox', 'Lib');
 
 class PostsController extends AppController {
     public $helpers = array('Tinymce');
+	public $uses = array('Post', 'User', 'Character');
 	/*
 	public $arrayBBCode=array(
 	    ''=>         array('type'=>BBCODE_TYPE_ROOT,  
@@ -29,14 +30,44 @@ class PostsController extends AppController {
 */
 
     public function index() {
+    	$user = $this->User->find('first', array(
+	        'conditions' => array('User.id' => $this->Auth->user('id'),
+	        ),
+	        'contain' => false
+	      ));
+	    if (!$user) {
+	        throw new NotFoundException(__('Invalid user'));
+	    }
+		
+    	$char = $this->Character->find('first', array(
+        'conditions' => array('Character.user_id' => $user['User']['id'], 
+                              'Character.campaign_id' => $user['User']['campaign_id']
+        ),
+
+        'contain' => array(
+            'Race',
+            'Career',
+            'Rank',
+            'CharactersSkillsSkillspec' => array(
+              'Skill',
+              'Skillspec'
+            ),
+         )
+
+      ));
+
     	 if ($this->request->is('post')) {
     	 	$config = HTMLPurifier_Config::createDefault();
     	 	$purifier = new HTMLPurifier($config);
-			pr($this->request->data);
-//			$this->request->data['Post']['title'] = $purifier->purify($this->request->data['Post']['title']);
-			$this->request->data['Post']['content'] = $purifier->purify($this->request->data['Post']['content']);
-            pr($this->request->data);
 
+			$dirty_html = $this->request->data['Post']['content'];
+			pr($dirty_html);
+			$dirty_html = $purifier->purify($dirty_html);
+//			$dirty_html = preg_replace('#\[d100\]#', ToolBox::rollDice('1d100'), $dirty_html, 1, $count);
+			if(preg_match('#\[d100\]#', $dirty_html)) {
+				$dirty_html = $char['Character']['name'].' '.__('throws 1d100 and gets'). ' '.ToolBox::rollDice('1d100+100');
+			}
+            pr($dirty_html);
         }
          $this->set('posts', $this->Post->find('all'));
  /*

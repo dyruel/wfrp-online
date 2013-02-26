@@ -183,7 +183,7 @@ class TinymceHelper extends AppHelper {
 			    'setup' => 'function(ed) {
 			        ed.addButton(\'mybutton\', {
 			            title : \'d100\',
-			            //image : \'../img/example.gif\',
+			            image : \'../img/example.gif\',
 			            onclick : function() {
 			                ed.focus();
 			                ed.selection.setContent(\'[d100]\');
