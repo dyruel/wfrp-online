@@ -29,6 +29,27 @@ class PostsController extends AppController {
 	);
 */
 
+  public static function process_post($str) {
+ 	$purifier = new HTMLPurifier(HTMLPurifier_Config::createDefault());
+
+	$str = $purifier->purify($str);
+
+	if(preg_match('#\[d100\]#', $str)) {
+		$str = $char['Character']['name'].' '.__('throws 1d100 and gets'). ' '.ToolBox::rollDice('1d100');
+	}
+	else {
+		$count = 0;
+		$str = preg_filter('#\[skill([1-9]+[0-9]*)\]#', $char['Character']['name'].' '.__('throws 1d100 and gets'), $str, 1, $count);	
+	}
+
+	/*
+	if(preg_match('#\[skill([1-9]+[0-9]*)\]#', $dirty_html)) {
+		$dirty_html = $char['Character']['name'].' '.__('throws 1d100 and gets'). ' '.ToolBox::rollDice('1d100');
+	}*/
+	
+	return $str;
+  }
+
     public function index() {
     	$user = $this->User->find('first', array(
 	        'conditions' => array('User.id' => $this->Auth->user('id'),
@@ -65,7 +86,7 @@ class PostsController extends AppController {
 			$dirty_html = $purifier->purify($dirty_html);
 //			$dirty_html = preg_replace('#\[d100\]#', ToolBox::rollDice('1d100'), $dirty_html, 1, $count);
 			if(preg_match('#\[d100\]#', $dirty_html)) {
-				$dirty_html = $char['Character']['name'].' '.__('throws 1d100 and gets'). ' '.ToolBox::rollDice('1d100+100');
+				$dirty_html = $char['Character']['name'].' '.__('throws 1d100 and gets'). ' '.ToolBox::rollDice('1d100');
 			}
             pr($dirty_html);
         }

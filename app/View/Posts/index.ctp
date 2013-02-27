@@ -52,54 +52,43 @@ echo $this->Html->script('post', array('inline' => false));
 
 
 	
-<div id="rpg-tabs">
-	<ul>
-	  <li><a href="#rpg-tabs-1"><?php echo __('Add Post'); ?></a></li>
-	  <li><a href="#rpg-tabs-2"><?php echo __('Skill test'); ?></a></li>
-	</ul>
+<?php echo $this->Form->create('Post');?>
+    <fieldset>
+    <?php
+ //       echo $this->Form->input('title');
+	$str = "tinymce.create('tinymce.plugins.ExamplePlugin', {
+    createControl: function(n, cm) {
+        switch (n) {
+            case 'mylistbox':
+                var mlb = cm.createListBox('mylistbox', {
+                     title : 'My list box',
+                     onselect : function(v) {
+                         tinyMCE.activeEditor.windowManager.alert('Value selected:' + v);
+                     }
+                });
+
+                // Add some values to the list box
+                mlb.add('Some item 1', 'val1');
+                mlb.add('some item 2', 'val2');
+                mlb.add('some item 3', 'val3');
+
+                // Return the new listbox instance
+                return mlb;
+        }
+
+        return null;
+    }
+});";
+ 
+        echo $this->Tinymce->input('Post.content', array(
+            'label' => 'Content'
+            ),array(
+                'language'=>'en'
+            ),
+            'rpg'
+        );
+    ?>
+    </fieldset>
+<?php echo $this->Form->end(__('Submit'));?>
+
 	
-	<div id="rpg-tabs-1">	
-	<?php echo $this->Form->create('Post');?>
-	    <fieldset>
-	    <?php
-	 //       echo $this->Form->input('title');
-		$str = "tinymce.create('tinymce.plugins.ExamplePlugin', {
-	    createControl: function(n, cm) {
-	        switch (n) {
-	            case 'mylistbox':
-	                var mlb = cm.createListBox('mylistbox', {
-	                     title : 'My list box',
-	                     onselect : function(v) {
-	                         tinyMCE.activeEditor.windowManager.alert('Value selected:' + v);
-	                     }
-	                });
-	
-	                // Add some values to the list box
-	                mlb.add('Some item 1', 'val1');
-	                mlb.add('some item 2', 'val2');
-	                mlb.add('some item 3', 'val3');
-	
-	                // Return the new listbox instance
-	                return mlb;
-	        }
-	
-	        return null;
-	    }
-	});";
-	 
-	        echo $this->Tinymce->input('Post.content', array(
-	            'label' => 'Content'
-	            ),array(
-	                'language'=>'en'
-	            ),
-	            'rpg'
-	        );
-	    ?>
-	    </fieldset>
-	<?php echo $this->Form->end(__('Submit'));?>
-	</div>
-	<div id="rpg-tabs-2">
-		hello
-	</div>
-	
-</div>

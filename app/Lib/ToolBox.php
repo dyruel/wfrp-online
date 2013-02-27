@@ -11,7 +11,7 @@ class ToolBox {
 
     return self::$_a_statsStr;
   }
-
+  
 
   public static function rollDice($str) {
     if(!is_string($str) or !preg_match("#^[1-9]+d[1-9]+[0-9]*(\+[0-9]+)?$#", $str))
