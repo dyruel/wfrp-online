@@ -37,6 +37,7 @@ class AppController extends Controller {
 
     public $components = array(
         'DebugKit.Toolbar',
+        'RequestHandler',
         'Session',
         'Security',
         'Auth' => array(
@@ -56,15 +57,15 @@ class AppController extends Controller {
 	public function isAuthorized($user = null) {
 
         // Any registered user can access public functions
-/*        if (empty($this->request->params['gm'])) {
+        if (empty($this->request->params['gm'])) {
             return true;
-        }*/
-        
+        }
+ /*       
         // Only pcs can access pcs functions
         if (isset($this->request->params['pc'])) {
             return (bool)($user['ACampaign']['user_id'] !== $user['id']);
         }
-		
+	*/	
         // Only gms can access gm functions
         if (isset($this->request->params['gm'])) {
             return (bool)($user['ACampaign']['user_id'] === $user['id']);

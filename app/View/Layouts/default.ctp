@@ -52,15 +52,28 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 		<h1><?php echo $this->Html->link($cakeDescription, 'http://cakephp.org'); ?></h1>
 	</div>
 	<div id="content">
-
-		<?php echo $this->Session->flash(); ?>
-
-		<?php echo $this->fetch('content'); ?>
+		<div class="actions">
+			
+			<?php echo $this->Html->link('Character', array('controller' => 'characters')); ?>
+			<?php echo $this->Html->link('Campaign', array('controller' => 'campaigns')); ?>
+			<?php echo $this->Html->link('Logout', array('controller' => 'users', 'action' => 'logout')); ?>
+		</div>
+		<div class="index">
+			<?php echo $this->Session->flash(); ?>
+	
+			<?php echo $this->fetch('content'); ?>
+		</div>
 	</div>
 	<div id="footer">
 		<?php echo $this->Html->link(
 				$this->Html->image('cake.power.gif', array('alt' => $cakeDescription, 'border' => '0')),
 				'http://www.cakephp.org/',
+				array('target' => '_blank', 'escape' => false)
+			);
+		?>
+		<?php echo $this->Html->link(
+				$this->Html->image('smarty.png', array('alt' => 'Smarty template engine', 'border' => '0')),
+				'http://www.smarty.net',
 				array('target' => '_blank', 'escape' => false)
 			);
 		?>

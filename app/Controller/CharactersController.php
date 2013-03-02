@@ -10,23 +10,16 @@ class CharactersController extends AppController {
 
   public $uses = array('Character', 'User');
 //  public $helpers = array('Form');
-  public $helpers = array('Js' => array('Jquery'), 'Wizard.Wizard');
+  public $helpers = array('Js' => array('Jquery'));
 
-  public $components = array('Wizard.Wizard');
+//  public $components = array('Wizard.Wizard');
 
 //  public $viewClass = 'TwigView.Twig';
-
+/*
   public function beforeFilter() {
       $this->Wizard->steps = array('campaign', 'gender', 'race', 'career', 'portrait', 'misc', 'validation');
   }
-
-
-  public function wizard($step = null) {
-      $this->Wizard->process($step);
-  }
-
-  public function _processCampaign() {
-  }
+*/
 
   /**
    * index method

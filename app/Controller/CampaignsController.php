@@ -10,7 +10,7 @@ App::uses('ToolBox', 'Lib');
 class CampaignsController extends AppController {
 	public $uses = array('Campaign', 'User', 'Post', 'Character');
 		
-	public function pc_index() {
+	public function index() {
 		$user = null;
 		$char = null;
 		$author = '';
@@ -45,8 +45,6 @@ class CampaignsController extends AppController {
 		    if (!$char) {
 		        throw new NotFoundException(__('Invalid character'));
 		    }
-		} else {
-			throw new NotFoundException(__('Your are a GM'));
 		}
 		
 //pr($char);
@@ -56,6 +54,49 @@ class CampaignsController extends AppController {
 		if ($this->request->is('post')) {
 			$input = h($this->request->data['Post']['content']);
 			
+			$this->Post->create();
+			
+			$xmlPost = Xml::build('<?xml version="1.0"?><root></root>');
+			$xmlPost->addChild('name', $char != null ? $char['Character']['name'] : __('GM'));
+			$xmlPost->addChild('race', $char['Race']['name']);
+			$xmlPost->addChild('career', $char['Career']['name']);
+			$xmlPost->addChild('rank', $char['Rank']['name']);
+			$xmlPost->addChild('gender', $char['Character']['gender']);
+			$xmlPost->addChild('text', $input);
+			
+			if($this->Post->save(array(
+					'body' => $xmlPost->asXML(), 
+					'character_id' => $char != null ? $char['Character']['id'] : 0,
+					'area_id' => $char['Character']['area_id'],
+					'campaign_id' => $user['User']['campaign_id'],						
+				))) {
+				$this->Session->setFlash(__('Action performed.'));
+			} else {
+				$this->Session->setFlash(__('Unable to perform the action.'));
+			}				
+		}
+
+		$this->paginate = array(
+	        'conditions' => array('Post.campaign_id' => $user['User']['campaign_id'],
+	        					  'Post.area_id' => $char['Character']['area_id'],
+	        ),
+		    'limit' => 5
+		);
+		$posts = $this->paginate('Post');
+
+
+		$this->set('logs', $xml->log);
+		$this->set('posts', $posts);
+		$this->set('char', $char);
+		
+/*
+		pr($user);
+		pr($char);
+ */
+	 
+	}
+
+	public function gm_index() {
 			if($char != null && preg_match('#\[d100\]#', $input)) {
 				$log = $xml->addChild('log');
 				$log->addChild('date', date('d-m-Y (H:i:s)'));
@@ -91,51 +132,7 @@ class CampaignsController extends AppController {
 				} else {
 					$this->Session->setFlash(__('Unable to perform the action.'));
 				}				
-			} else { // Regular post
-				$this->Post->create();
-				
-				$xmlPost = Xml::build('<?xml version="1.0"?><root></root>');
-				$xmlPost->addChild('name', $char != null ? $char['Character']['name'] : __('GM'));
-				$xmlPost->addChild('race', $char['Race']['name']);
-				$xmlPost->addChild('career', $char['Career']['name']);
-				$xmlPost->addChild('rank', $char['Rank']['name']);
-				$xmlPost->addChild('gender', $char['Character']['gender']);
-				$xmlPost->addChild('text', $input);
-				
-				if($this->Post->save(array(
-						'body' => $xmlPost->asXML(), 
-						'character_id' => $char != null ? $char['Character']['id'] : 0,
-						'area_id' => $char['Character']['area_id'],
-						'campaign_id' => $user['User']['campaign_id'],						
-					))) {
-					$this->Session->setFlash(__('Action performed.'));
-				} else {
-					$this->Session->setFlash(__('Unable to perform the action.'));
-				}				
-			}
-       	}
-
-		$this->paginate = array(
-	        'conditions' => array('Post.campaign_id' => $user['User']['campaign_id'],
-	        					  'Post.area_id' => $char['Character']['area_id'],
-	        ),
-		    'limit' => 5
-		);
-		$posts = $this->paginate('Post');
-
-
-		$this->set('logs', $xml->log);
-		$this->set('posts', $posts);
-		$this->set('char', $char);
-		
-/*
-		pr($user);
-		pr($char);
- */
-	 
-	}
-
-	public function gm_index() {
+			}		
 		//echo 'gm';
 	}
 	

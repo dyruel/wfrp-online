@@ -1,75 +1,13 @@
 <?php 
-
 $this->Html->script('tiny_mce/tiny_mce', array('inline' => false));
 
 $this->Html->scriptStart(array('inline' => false));
 echo "
-tinymce.create('tinymce.plugins.WfrpPlugin', {
-    createControl: function(n, cm) {
-        switch (n) {
-            case 'skilllistbox':
-                var mlb = cm.createListBox('skilllistbox', {
-                     title : '".__('Skill test')."',
-                     onselect : function(v) {
-//                         tinyMCE.activeEditor.windowManager.alert('Value selected:' + v);
-                         tinyMCE.activeEditor.execCommand('mceInsertContent', false, v);
-                     }
-                });
-";
-
- 
-foreach ($char['CharactersSkillsSkillspec'] as $skill):
-	$skill_name = $skill['Skill']['name'];
-	$skill_id = $skill['skill_id'].'-'.$skill['skillspec_id'];
-	if(intval($skill['skillspec_id']) > 0) {
-		$skill_name .= ':'.$skill['Skillspec']['name'];
-	}
-	
-				echo "mlb.add('".$skill_name."', '[skill=".$skill_id."]');";
-endforeach;
-
-echo "
-                // Return the new listbox instance
-                return mlb;
-
-            case 'mysplitbutton':
-                var c = cm.createSplitButton('mysplitbutton', {
-                    title : 'My split button',
-                    image : 'img/example.gif',
-                    onclick : function() {
-                        tinyMCE.activeEditor.windowManager.alert('Button was clicked.');
-                    }
-                });
-
-                c.onRenderMenu.add(function(c, m) {
-                    m.add({title : 'Some title', 'class' : 'mceMenuItemTitle'}).setDisabled(1);
-
-                    m.add({title : 'Some item 1', onclick : function() {
-                        tinyMCE.activeEditor.windowManager.alert('Some  item 1 was clicked.');
-                    }});
-
-                    m.add({title : 'Some item 2', onclick : function() {
-                        tinyMCE.activeEditor.windowManager.alert('Some  item 2 was clicked.');
-                    }});
-                });
-
-                // Return the new splitbutton instance
-                return c;
-        }
-
-        return null;
-    }
-});
-
-// Register plugin with a short name
-tinymce.PluginManager.add('wfrp', tinymce.plugins.WfrpPlugin);
-
 // Initialize TinyMCE with the new plugin and listbox
 tinyMCE.init({
-    plugins : '-wfrp', // - tells TinyMCE to skip the loading of the plugin
     theme : 'advanced',
     theme_advanced_buttons1 : 'bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo',
-    theme_advanced_buttons2 : 'skilllistbox',
+    theme_advanced_buttons2 : '',
     theme_advanced_buttons3 : '',
     theme_advanced_toolbar_location : 'top',
     theme_advanced_toolbar_align : 'left',
@@ -101,6 +39,7 @@ $this->Html->scriptEnd();
 </table>
 <h1>Posts</h1>
 
+
 <table>
     <tr>
         <th>Id</th>
@@ -128,7 +67,11 @@ $this->Html->scriptEnd();
     <?php endforeach; ?>
 </table>
 
-<p><?php echo $this->Paginator->numbers(); ?></p>
+<p>
+<?php
+	echo $this->Paginator->numbers(); 
+?>
+</p>
 	
 <?php echo $this->Form->create('Post', array('controller' => 'campaigns'));?>
     <fieldset>

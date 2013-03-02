@@ -58,7 +58,7 @@ class SmartyView extends View
 				$this->Smarty->assign($key, $value);
 			}
 		}
-
+//pr($this->viewVars);
         $this->Smarty->assignByRef('view', $this);
         $this->Smarty->assignByRef('this', $this);
 		
