@@ -77,15 +77,25 @@ class CampaignsController extends AppController {
 
        	}
 
-		$posts = $this->Post->find('all', array(
+		$this->paginate = array(
+	        'conditions' => array('Post.campaign_id' => $user['User']['campaign_id'],
+	        					  'Post.area_id' => $char['Character']['area_id'],
+	        ),
+		    'limit' => 5
+		);
+		$posts = $this->paginate('Post');
+		
+		/*
+		$posts = $this->Post->paginate('all', array(
 	        'conditions' => array('Post.campaign_id' => $user['User']['campaign_id'],
 	        					  'Post.area_id' => $char['Character']['area_id'],
 	        )
 		));
+		 * */
 
 		$this->set('logs', $xml->log);
 		$this->set('posts', $posts);
-		$this->set('char', $char);
+//		$this->set('char', $char);
 		
 /*
 		pr($user);

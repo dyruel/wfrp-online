@@ -48,7 +48,7 @@ echo $this->Html->script('post', array('inline' => false));
             <?php echo $post['Post']['body']; /*echo $this->Html->link($post['Post']['body'], array('action' => 'view', $post['Post']['id']));*/ ?>
         </td>
         <td><?php echo $post['Area']['name']; ?></td>
-        <td><?php echo $post['Character']['name']; ?></td>
+        <td><?php echo intval($post['Character']['id']) > 0 ? $post['Character']['name'] : __('GM'); ?></td>
         <td><?php echo $post['Campaign']['name']; ?></td>
         <td>
             <?php echo $post['Post']['created']; ?>
@@ -57,7 +57,7 @@ echo $this->Html->script('post', array('inline' => false));
     <?php endforeach; ?>
 </table>
 
-
+<p><?php echo $this->Paginator->numbers(); ?></p>
 	
 <?php echo $this->Form->create('Post', array('controller' => 'campaigns'));?>
     <fieldset>
