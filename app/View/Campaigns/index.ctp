@@ -43,7 +43,7 @@ $this->Html->scriptEnd();
 <table>
     <tr>
         <th>Id</th>
-        <th>Title</th>
+        <th>Text</th>
         <th>Area</th>
         <th>Author</th>
         <th>Campaign</th>
@@ -58,7 +58,7 @@ $this->Html->scriptEnd();
             <?php echo $post['Post']['body']; /*echo $this->Html->link($post['Post']['body'], array('action' => 'view', $post['Post']['id']));*/ ?>
         </td>
         <td><?php echo $post['Area']['name']; ?></td>
-        <td><?php echo intval($post['Character']['id']) > 0 ? $post['Character']['name'] : __('GM'); ?></td>
+        <td><?php echo intval($post['Character']['id']) > 0 ? $this->Html->link($post['Character']['name'], array('controller' => 'characters', 'action' => 'view', $post['Character']['id'])) : __('GM'); ?></td>
         <td><?php echo $post['Campaign']['name']; ?></td>
         <td>
             <?php echo $post['Post']['created']; ?>
