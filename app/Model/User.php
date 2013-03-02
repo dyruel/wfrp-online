@@ -44,6 +44,17 @@ class User extends AppModel {
             'dependent'     => false
         )
     );
+	
+	public $belongsTo = array(
+        'ACampaign' => array(
+            'className'     => 'Campaign',
+            'foreignKey'    => 'campaign_id',
+//            'conditions'    => array('Comment.status' => '1'),
+//            'order'         => 'Comment.created DESC',
+//            'limit'         => '5',
+            'dependent'     => true
+        )
+    );
 /*
     public $hasOne = array(
         'ActiveCharacter' => array(

@@ -11,8 +11,23 @@ echo $this->Html->script('post', array('inline' => false));
 
 
 
-<h1>Blog posts</h1>
-<p><?php echo $this->Html->link('Add Post', array('action' => 'add')); ?></p>
+<h1>Logs</h1>
+
+<table>
+    <tr>
+        <th>Date</th>
+        <th>Text</th>
+    </tr>
+    <?php foreach ($logs as $log): /*echo pr($post);*/ ?>
+    	
+    <tr>
+        <td><?php echo $log->date; ?></td>
+        <td><?php echo $log->text; ?></td>
+    </tr>
+    <?php endforeach; ?>
+</table>
+<h1>Posts</h1>
+
 <table>
     <tr>
         <th>Id</th>
@@ -20,29 +35,21 @@ echo $this->Html->script('post', array('inline' => false));
         <th>Area</th>
         <th>Author</th>
         <th>Campaign</th>
-        <th>Actions</th>
         <th>Created</th>
     </tr>
 
 <!-- Here's where we loop through our $posts array, printing out post info -->
 
-    <?php foreach ($posts as $post): ?>
+    <?php foreach ($posts as $post): /*echo pr($post);*/ ?>
+    	
     <tr>
         <td><?php echo $post['Post']['id']; ?></td>
         <td>
-            <?php echo $this->Html->link($post['Post']['body'], array('action' => 'view', $post['Post']['id'])); ?>
+            <?php echo $post['Post']['body']; /*echo $this->Html->link($post['Post']['body'], array('action' => 'view', $post['Post']['id']));*/ ?>
         </td>
-        <td><?php echo $post['Area']['name']; ?></td>
+        <td><?php echo $char['Area']['name']; ?></td>
         <td><?php echo $post['Character']['name']; ?></td>
         <td><?php echo $post['Character']['campaign_id']; ?></td>
-        <td>
-            <?php echo $this->Form->postLink(
-                'Delete',
-                array('action' => 'delete', $post['Post']['id']),
-                array('confirm' => 'Are you sure?'));
-            ?>
-            <?php echo $this->Html->link('Edit', array('action' => 'edit', $post['Post']['id'])); ?>
-        </td>
         <td>
             <?php echo $post['Post']['created']; ?>
         </td>
@@ -52,7 +59,7 @@ echo $this->Html->script('post', array('inline' => false));
 
 
 	
-<?php echo $this->Form->create('Post');?>
+<?php echo $this->Form->create('Post', array('controller' => 'campaigns'));?>
     <fieldset>
     <?php
  //       echo $this->Form->input('title');
@@ -81,7 +88,7 @@ echo $this->Html->script('post', array('inline' => false));
 });";
  
         echo $this->Tinymce->input('Post.content', array(
-            'label' => 'Content'
+            'label' => 'Write'
             ),array(
                 'language'=>'en'
             ),
