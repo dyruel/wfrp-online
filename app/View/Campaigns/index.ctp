@@ -4,11 +4,11 @@ $this->Html->script('tiny_mce/tiny_mce', array('inline' => false));
 
 $this->Html->scriptStart(array('inline' => false));
 echo "
-tinymce.create('tinymce.plugins.ExamplePlugin', {
+tinymce.create('tinymce.plugins.WfrpPlugin', {
     createControl: function(n, cm) {
         switch (n) {
-            case 'mylistbox':
-                var mlb = cm.createListBox('mylistbox', {
+            case 'skilllistbox':
+                var mlb = cm.createListBox('skilllistbox', {
                      title : '".__('Skill test')."',
                      onselect : function(v) {
 //                         tinyMCE.activeEditor.windowManager.alert('Value selected:' + v);
@@ -62,14 +62,14 @@ echo "
 });
 
 // Register plugin with a short name
-tinymce.PluginManager.add('example', tinymce.plugins.ExamplePlugin);
+tinymce.PluginManager.add('wfrp', tinymce.plugins.WfrpPlugin);
 
 // Initialize TinyMCE with the new plugin and listbox
 tinyMCE.init({
-    plugins : '-example', // - tells TinyMCE to skip the loading of the plugin
+    plugins : '-wfrp', // - tells TinyMCE to skip the loading of the plugin
     theme : 'advanced',
-    theme_advanced_buttons1 : 'mylistbox,mysplitbutton,bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo,link,unlink',
-    theme_advanced_buttons2 : '',
+    theme_advanced_buttons1 : 'bold,italic,underline,separator,strikethrough,justifyleft,justifycenter,justifyright,justifyfull,bullist,numlist,undo,redo',
+    theme_advanced_buttons2 : 'skilllistbox',
     theme_advanced_buttons3 : '',
     theme_advanced_toolbar_location : 'top',
     theme_advanced_toolbar_align : 'left',

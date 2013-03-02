@@ -47,7 +47,7 @@ class CampaignsController extends AppController {
 		    }
 		}
 		
-		pr($char);
+//pr($char);
 		
 		$xml = Xml::build($user['ACampaign']['logs']);
 
@@ -63,6 +63,32 @@ class CampaignsController extends AppController {
 				} else {
 					$this->Session->setFlash(__('Unable to perform the action.'));
 				}
+			} else if($char != null && preg_match('#\[skill=([1-9]+)\-([0-9]+)\]#', $input, $matches)) {
+//pr($matches);
+				$flag = false;
+				$skill_name = '';
+				foreach($char['CharactersSkillsSkillspec'] as $skill) {
+					if(intval($skill['skill_id']) == intval($matches[1]) && intval($skill['skillspec_id']) == intval($matches[2])) {
+						$skill_name = $skill['Skill']['name'];
+						if(intval($skill['skillspec_id']) > 0) {
+							$skill_name .= ':'.$skill['Skillspec']['name'];
+						}
+						$flag = true;
+						break;
+					}
+				}
+				if(!$flag) {
+					throw new NotFoundException(__('Invalid skill test'));
+				}
+				
+				$log = $xml->addChild('log');
+				$log->addChild('date', date('d-m-Y (H:i:s)'));
+				$log->addChild('text', __('%s tries %s and gets %s', $char['Character']['name'], $skill_name, ToolBox::rollDice('1d100')));
+				if($this->Campaign->save(array('id'=> $user['User']['campaign_id'], 'logs' => $xml->asXML()))) {
+					$this->Session->setFlash(__('Action performed.'));
+				} else {
+					$this->Session->setFlash(__('Unable to perform the action.'));
+				}				
 			} else { // Regular post
 				$this->Post->create();
 				
