@@ -8,9 +8,9 @@ App::uses('ToolBox', 'Lib');
  *
  */
 class CampaignsController extends AppController {
-	public $uses = array('User', 'Post', 'Character','Campaign');
+	public $uses = array('Campaign', 'User', 'Post', 'Character');
 		
-	public function index() {
+	public function pc_index() {
 		$user = null;
 		$char = null;
 		$author = '';
@@ -45,6 +45,8 @@ class CampaignsController extends AppController {
 		    if (!$char) {
 		        throw new NotFoundException(__('Invalid character'));
 		    }
+		} else {
+			throw new NotFoundException(__('Your are a GM'));
 		}
 		
 //pr($char);
@@ -131,6 +133,10 @@ class CampaignsController extends AppController {
 		pr($char);
  */
 	 
+	}
+
+	public function gm_index() {
+		//echo 'gm';
 	}
 	
 }
