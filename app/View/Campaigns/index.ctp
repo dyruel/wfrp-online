@@ -9,17 +9,26 @@ tinymce.create('tinymce.plugins.ExamplePlugin', {
         switch (n) {
             case 'mylistbox':
                 var mlb = cm.createListBox('mylistbox', {
-                     title : 'My list box',
+                     title : '".__('Skill test')."',
                      onselect : function(v) {
-                         tinyMCE.activeEditor.windowManager.alert('Value selected:' + v);
+//                         tinyMCE.activeEditor.windowManager.alert('Value selected:' + v);
+                         tinyMCE.activeEditor.execCommand('mceInsertContent', false, v);
                      }
                 });
+";
 
-                // Add some values to the list box
-                mlb.add('Some item 1', 'val1');
-                mlb.add('some item 2', 'val2');
-                mlb.add('some item 3', 'val3');
+ 
+foreach ($char['CharactersSkillsSkillspec'] as $skill):
+	$skill_name = $skill['Skill']['name'];
+	$skill_id = $skill['skill_id'].'-'.$skill['skillspec_id'];
+	if(intval($skill['skillspec_id']) > 0) {
+		$skill_name .= ':'.$skill['Skillspec']['name'];
+	}
+	
+				echo "mlb.add('".$skill_name."', '[skill=".$skill_id."]');";
+endforeach;
 
+echo "
                 // Return the new listbox instance
                 return mlb;
 

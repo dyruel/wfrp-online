@@ -36,6 +36,10 @@ class CampaignsController extends AppController {
 	            'Career',
 	            'Rank',
 	            'Area',
+	            'CharactersSkillsSkillspec' => array(
+	              'Skill',
+	              'Skillspec'
+	            ),	            
 	         )
 	        ));
 		    if (!$char) {
@@ -43,6 +47,7 @@ class CampaignsController extends AppController {
 		    }
 		}
 		
+		pr($char);
 		
 		$xml = Xml::build($user['ACampaign']['logs']);
 
