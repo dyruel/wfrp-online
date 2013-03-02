@@ -9,7 +9,7 @@ App::uses('ToolBox', 'Lib');
  */
 class CampaignsController extends AppController {
 	public $uses = array('User', 'Post', 'Character','Campaign');
-	
+		
 	public function index() {
 		$user = null;
 		$char = null;
@@ -43,11 +43,11 @@ class CampaignsController extends AppController {
 		    }
 		}
 		
+		
 		$xml = Xml::build($user['ACampaign']['logs']);
 
 		if ($this->request->is('post')) {
 			$input = h($this->request->data['Post']['content']);
-//			pr($input);
 			
 			if($char != null && preg_match('#\[d100\]#', $input)) {
 				$log = $xml->addChild('log');
@@ -60,8 +60,16 @@ class CampaignsController extends AppController {
 				}
 			} else { // Regular post
 				$this->Post->create();
+				$xmlPost = Xml::build('<?xml version="1.0"?><root></root>');
+				$xmlPost->addChild('name', $char != null ? $char['Character']['name'] : __('GM'));
+				$xmlPost->addChild('race', $char['Race']['name']);
+				$xmlPost->addChild('career', $char['Career']['name']);
+				$xmlPost->addChild('rank', $char['Rank']['name']);
+				$xmlPost->addChild('gender', $char['Character']['gender']);
+				$xmlPost->addChild('text', $input);
+				
 				if($this->Post->save(array(
-						'body' => $input, 
+						'body' => $xmlPost->asXML(), 
 						'character_id' => $char != null ? $char['Character']['id'] : 0,
 						'area_id' => $char['Character']['area_id'],
 						'campaign_id' => $user['User']['campaign_id'],						
@@ -71,10 +79,6 @@ class CampaignsController extends AppController {
 					$this->Session->setFlash(__('Unable to perform the action.'));
 				}				
 			}
-		
-			// Parse the input
-			//$input = preg_filter("#^[1-9]+d[1-9]+[0-9]*(\+[0-9]+)?$#", ToolBox::rollDice('1d100'), $input);
-
        	}
 
 		$this->paginate = array(
@@ -84,18 +88,10 @@ class CampaignsController extends AppController {
 		    'limit' => 5
 		);
 		$posts = $this->paginate('Post');
-		
-		/*
-		$posts = $this->Post->paginate('all', array(
-	        'conditions' => array('Post.campaign_id' => $user['User']['campaign_id'],
-	        					  'Post.area_id' => $char['Character']['area_id'],
-	        )
-		));
-		 * */
+
 
 		$this->set('logs', $xml->log);
 		$this->set('posts', $posts);
-//		$this->set('char', $char);
 		
 /*
 		pr($user);
