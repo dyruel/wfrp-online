@@ -9,7 +9,7 @@ echo $this->Html->script('post', array('inline' => false));
 
 ?>
 
-
+<h1><?php echo __('You are at %s', $char['Area']['name']); ?></h1>
 
 <h1>Logs</h1>
 

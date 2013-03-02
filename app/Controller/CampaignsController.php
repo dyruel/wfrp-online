@@ -35,7 +35,7 @@ class CampaignsController extends AppController {
 	            'Race',
 	            'Career',
 	            'Rank',
-//	            'Area',
+	            'Area',
 	         )
 	        ));
 		    if (!$char) {
@@ -60,6 +60,7 @@ class CampaignsController extends AppController {
 				}
 			} else { // Regular post
 				$this->Post->create();
+				
 				$xmlPost = Xml::build('<?xml version="1.0"?><root></root>');
 				$xmlPost->addChild('name', $char != null ? $char['Character']['name'] : __('GM'));
 				$xmlPost->addChild('race', $char['Race']['name']);
@@ -92,6 +93,7 @@ class CampaignsController extends AppController {
 
 		$this->set('logs', $xml->log);
 		$this->set('posts', $posts);
+		$this->set('char', $char);
 		
 /*
 		pr($user);
