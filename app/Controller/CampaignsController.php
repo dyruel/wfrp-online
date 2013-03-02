@@ -13,6 +13,7 @@ class CampaignsController extends AppController {
 	public function index() {
 		$user = null;
 		$char = null;
+		$author = '';
 		
     	$user = $this->User->find('first', array(
 	        'conditions' => array('User.id' => $this->Auth->user('id'),
@@ -34,12 +35,12 @@ class CampaignsController extends AppController {
 	            'Race',
 	            'Career',
 	            'Rank',
-	            'Area',
+//	            'Area',
 	         )
 	        ));
 		    if (!$char) {
 		        throw new NotFoundException(__('Invalid character'));
-		    }			
+		    }
 		}
 		
 		$xml = Xml::build($user['ACampaign']['logs']);
@@ -62,7 +63,6 @@ class CampaignsController extends AppController {
 				if($this->Post->save(array(
 						'body' => $input, 
 						'character_id' => $char != null ? $char['Character']['id'] : 0,
-						'user_id' => $user['User']['id'],
 						'area_id' => $char['Character']['area_id'],
 						'campaign_id' => $user['User']['campaign_id'],						
 					))) {

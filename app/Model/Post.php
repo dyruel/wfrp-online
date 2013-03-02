@@ -26,6 +26,14 @@ class Post extends AppModel {
 //            'order'         => 'Comment.created DESC',
 //            'limit'         => '5',
             'dependent'     => true
+        ),
+		'Campaign' => array(
+            'className'     => 'Area',
+            'foreignKey'    => 'area_id',
+//            'conditions'    => array('Comment.status' => '1'),
+//            'order'         => 'Comment.created DESC',
+//            'limit'         => '5',
+            'dependent'     => true
         )
     );
 }

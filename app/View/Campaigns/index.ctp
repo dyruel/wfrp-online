@@ -47,9 +47,9 @@ echo $this->Html->script('post', array('inline' => false));
         <td>
             <?php echo $post['Post']['body']; /*echo $this->Html->link($post['Post']['body'], array('action' => 'view', $post['Post']['id']));*/ ?>
         </td>
-        <td><?php echo $char['Area']['name']; ?></td>
+        <td><?php echo $post['Area']['name']; ?></td>
         <td><?php echo $post['Character']['name']; ?></td>
-        <td><?php echo $post['Character']['campaign_id']; ?></td>
+        <td><?php echo $post['Campaign']['name']; ?></td>
         <td>
             <?php echo $post['Post']['created']; ?>
         </td>
