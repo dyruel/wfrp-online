@@ -129,14 +129,17 @@ class UsersController extends AppController {
 	}
 
   public function login() {
- //     $this->layout = false;
+ 	if($this->Auth->loggedIn()) {
+ 		$this->redirect($this->Auth->redirect());
+ 	} else {
       if ($this->request->is('post')) {
           if ($this->Auth->login()) {
               $this->redirect($this->Auth->redirect());
           } else {
               $this->Session->setFlash(__('Nom d\'user ou mot de passe invalide, réessayer'));
           }
-      }
+      } 		
+ 	}
   }
 
   public function logout() {

@@ -44,8 +44,9 @@ class AppController extends Controller {
             'authenticate' => array(
                 'Blowfish',
             ),
-            'loginRedirect' => array('controller' => 'campaigns', 'action' => 'index'),
-            'logoutRedirect' => array('controller' => 'users', 'action' => 'login'),
+            'loginAction' => array('gm' => false, 'controller' => 'users', 'action' => 'login'),
+            'loginRedirect' => array('gm' => false, 'controller' => 'campaigns', 'action' => 'index'),
+            'logoutRedirect' => array('gm' => false, 'controller' => 'users', 'action' => 'login'),
             'authorize' => 'Controller'
         )
     );
