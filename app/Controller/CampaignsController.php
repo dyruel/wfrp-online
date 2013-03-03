@@ -51,7 +51,7 @@ class CampaignsController extends AppController {
 		
 		$xml = Xml::build($user['ACampaign']['logs']);
 
-		if ($this->request->is('post')) {
+		if($this->request->is('post')) {
 			$input = h($this->request->data['Post']['content']);
 			
 			$this->Post->create();

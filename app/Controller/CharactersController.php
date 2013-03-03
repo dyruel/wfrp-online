@@ -8,7 +8,7 @@ App::uses('ToolBox', 'Lib');
  */
 class CharactersController extends AppController {
 
-  public $uses = array('Character', 'User');
+  public $uses = array('Character', 'User', 'Skill');
 //  public $helpers = array('Form');
   public $helpers = array('Js' => array('Jquery'));
 
@@ -166,5 +166,64 @@ class CharactersController extends AppController {
   }
 
 
+  /**
+   * skilltest method
+   *
+   * @return void
+   */
+  public function gm_skilltest($id = null) {
+  	if (!$id || !preg_match("#^[1-9]+$#", $id)) {
+    	throw new NotFoundException(__('Invalid character'));
+    }
+/*
+    $user = $this->User->find('first', array(
+        'conditions' => array('User.id' => $this->Auth->user('id'),
+        ),
+        'contain' => false
+      ));
+    if (!$user) {
+        throw new NotFoundException(__('Invalid user'));
+    }
+*/
+//	pr($user);
+    $char = $this->Character->find('first', array(
+        'conditions' => array('Character.id' => $id,
+        ),
+
+        'contain' => array(
+            'Race',
+            'Career',
+            'Rank',
+            'CharactersSkillsSkillspec' => array(
+              'Skill',
+              'Skillspec'
+            ),
+         )
+
+     ));
+//	 pr($char);
+	  
+    $baseSkills = $this->Skill->find('all', array(
+        'conditions' => array('Skill.type' => '0'
+        )
+     ));	  
+//	pr($chars);
+
+	if($this->request->is('post')) {
+		pr($this->request->data);
+	}
+	
+	$this->set('char', $char);
+	$this->set('baseSkills', $baseSkills);
+  }
+
+  /**
+   * give method
+   *
+   * @return void
+   */
+  public function gm_give() {
+  	
+  }
 
 }
