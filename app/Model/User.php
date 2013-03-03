@@ -44,7 +44,7 @@ class User extends AppModel {
             'dependent'     => false
         )
     );
-	
+/*	
 	public $belongsTo = array(
         'ACampaign' => array(
             'className'     => 'Campaign',
@@ -54,7 +54,7 @@ class User extends AppModel {
 //            'limit'         => '5',
             'dependent'     => true
         )
-    );
+    );*/
 /*
     public $hasOne = array(
         'ActiveCharacter' => array(

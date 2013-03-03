@@ -149,11 +149,11 @@ $this->Html->scriptEnd();
         <img src="<?php echo '/img/portraits/'.$char['Character']['gender'].'/'.$char['Race']['id'].'/'.$char['Character']['portrait_id'] ?>.jpg" title="Portrait " width="110" height="170" alt="portrait-id" />
       </div>
       <div style="padding-left:20em;">
-        <p><b>Nom :</b> <?php echo $char['Character']['name']; ?></p>
-        <p><b>Race :</b> <?php echo $char['Race']['name']; ?></p>
-        <p><b>Genre :</b> <?php echo intval($char['Character']['gender']) > 0 ? 'Feminin' : 'Masculin' ; ?></p>
-        <p><b>Carrière :</b> <?php echo $char['Career']['name']; ?></p>
-        <p><b>Argent :</b> <?php echo $char['Character']['money'][0]; ?> co, <?php echo $char['Character']['money'][1]; ?> pa, <?php echo $char['Character']['money'][2]; ?> s</p>
+        <p><b><?php echo __('Nom'); ?> :</b> <?php echo $char['Character']['name']; ?></p>
+        <p><b><?php echo __('Race'); ?> :</b> <?php echo $char['Race']['name']; ?></p>
+        <p><b><?php echo __('Gender'); ?> :</b> <?php echo intval($char['Character']['gender']) > 0 ? 'Feminin' : 'Masculin' ; ?></p>
+        <p><b><?php echo __('Career'); ?> :</b> <?php echo $char['Career']['name']; ?></p>
+        <p><b><?php echo __('Money'); ?> :</b> <?php echo $char['Character']['money'][0]; ?> co, <?php echo $char['Character']['money'][1]; ?> pa, <?php echo $char['Character']['money'][2]; ?> s</p>
       </div>
 
       <div style="clear:left;">

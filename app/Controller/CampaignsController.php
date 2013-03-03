@@ -14,7 +14,7 @@ class CampaignsController extends AppController {
 		$user = null;
 		$char = null;
 		$author = '';
-		
+/*		
     	$user = $this->User->find('first', array(
 	        'conditions' => array('User.id' => $this->Auth->user('id'),
 	        ),
@@ -88,7 +88,7 @@ class CampaignsController extends AppController {
 		$this->set('logs', $xml->log);
 		$this->set('posts', $posts);
 		$this->set('char', $char);
-		
+*/		
 /*
 		pr($user);
 		pr($char);
