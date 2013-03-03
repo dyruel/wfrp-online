@@ -12,18 +12,31 @@ tinyMCE.init({
     theme_advanced_toolbar_align : 'left',
     theme_advanced_statusbar_location : 'bottom',
     mode: 'exact',
-    elements:'". $this->Form->domId('Post.content')."'
+    elements:'". $this->Form->domId('Post.text')."'
 });
 ";
 $this->Html->scriptEnd();
 
 ?>
 
-<h1>Post a reply</h1>
+<h1>Post a reply <?php echo $char['Character']['name']; ?></h1>
+
+<?php if(isset($xmlPost)): ?>
+<p>
+	<?php echo $xmlPost->asXML(); ?>
+</p>
+<?php endif; ?>
+
 <?php echo $this->Form->create();?>
-    <fieldset>
-    <?php
-        echo $this->Form->input('Post.content',array('type' => 'textarea'));
-    ?>
-    </fieldset>
-<?php echo $this->Form->end(__('Submit'));?>
+<fieldset>
+<?php
+    echo $this->Form->input('text',array('type' => 'textarea'));
+?>
+</fieldset>
+<p>
+<?php
+	echo $this->Form->submit('Preview', array('name'=>'preview')); 
+	echo $this->Form->submit('Submit', array('name'=>'submit'))
+?>
+</p>
+<?php echo $this->Form->end();?>

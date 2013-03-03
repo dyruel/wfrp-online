@@ -62,6 +62,9 @@ class PostsController extends AppController {
 		    	'Post.campaign_id' => $campaign_id,
 		    	'Post.area_id' => $area_id
 			),
+	        'order' => array(
+	            'Post.created' => 'desc'
+	        ),
 		    'limit' => 5
 		);
 		$posts = $this->paginate('Post');
@@ -92,31 +95,56 @@ class PostsController extends AppController {
 	  		!preg_match("#^[1-9]+[0-9]*$#", $area_id)) {
 	    	throw new NotFoundException(__('Unknown area and/or campaign'));
 	    }
-			
-        if ($this->request->is('post')) {
-			$input = h($this->request->data['Post']['content']);
-			
-			$this->Post->create();
-			
+		// TODO GM??
+		$char = $this->Character->find('first', array(
+	        'conditions' => array(
+	        	'Character.user_id' => $this->Auth->user('id'),
+	        	'Character.campaign_id' => $campaign_id,
+	        	'Character.area_id' => $area_id,
+			),
+		
+	        'contain' => array(
+	            'Race',
+	            'Career',
+	            'Rank',
+	         )
+      	));
+	    if (!$char) {
+	        throw new NotFoundException(__('Invalid character'));
+	    }
+
+        if ($this->request->is('post') && isset($this->request->data['Post']['text'])) {
+			$input = h($this->request->data['Post']['text']);
+
 			$xmlPost = Xml::build('<?xml version="1.0"?><root></root>');
-			$xmlPost->addChild('name', $char != null ? $char['Character']['name'] : __('GM'));
+			$xmlPost->addChild('name', $char['Character']['name']);
 			$xmlPost->addChild('race', $char['Race']['name']);
 			$xmlPost->addChild('career', $char['Career']['name']);
 			$xmlPost->addChild('rank', $char['Rank']['name']);
 			$xmlPost->addChild('gender', $char['Character']['gender']);
 			$xmlPost->addChild('text', $input);
 			
-			if($this->Post->save(array(
-					'body' => $xmlPost->asXML(), 
-					'character_id' => $char != null ? $char['Character']['id'] : 0,
-					'area_id' => $char['Character']['area_id'],
-					'campaign_id' => $user['User']['campaign_id'],						
-				))) {
-				$this->Session->setFlash(__('Action performed.'));
+			if(isset($this->request->data['preview'])) {
+				$this->set('xmlPost', $xmlPost);
+			} else if(isset($this->request->data['submit'])) {
+				$this->Post->create();
+				if($this->Post->save(array(
+						'body' => $xmlPost->asXML(), 
+						'character_id' => $char != null ? $char['Character']['id'] : 0,
+						'area_id' => $area_id,
+						'campaign_id' => $campaign_id,						
+					))) {
+					$this->Session->setFlash(__('Action performed.'));
+					$this->redirect(array('controller' => 'posts', 'action' => 'index', $campaign_id, $area_id));
+				} else {
+					$this->Session->setFlash(__('Unable to post.'));
+				}				
 			} else {
 				$this->Session->setFlash(__('Unable to post.'));
 			}
         }
+		
+		$this->set('char', $char);
     }
 
     public function edit($id = null) {
