@@ -54,7 +54,7 @@ $cakeDescription = __d('cake_dev', 'CakePHP: the rapid development php framework
 	<div id="content">
 		<div class="actions">
 			<?php echo $this->Html->nestedList(array(
-				$this->Html->link('Character', array('gm' => false, 'controller' => 'characters', 'action' => 'index')),
+				$this->Html->link('Characters', array('gm' => false, 'controller' => 'characters', 'action' => 'index')),
 				$this->Html->link('Campaign', array('gm' => false, 'controller' => 'campaigns', 'action' => 'index')),
 				$this->Html->link('Logout', array('gm' => false, 'controller' => 'users', 'action' => 'logout')),
 				$this->Html->link('GM/Campaign', array('gm' => true, 'controller' => 'campaigns', 'action' => 'index')),

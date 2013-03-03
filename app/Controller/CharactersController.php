@@ -27,6 +27,39 @@ class CharactersController extends AppController {
    * @return void
    */
 	public function index() {
+	    $chars = $this->Character->find('all', array(
+	        'conditions' => array('Character.user_id' => $this->Auth->user('id')),
+	
+	        'contain' => array(
+	            'Race',
+	            'Career',
+	            'Rank',
+	            'Campaign',
+	            'Area',
+	            
+/*	            
+	            'CharactersSkillsSkillspec' => array(
+	              'Skill',
+	              'Skillspec'
+	            ),
+	            'CharactersTalentsTalentspec' => array(
+	              'Talent',
+	              'Talentspec'
+	            ),
+*/
+	         )
+	
+	     ));	
+/*		
+		$t_data['Character']['profile'] = Character::profileFormat($t_data['Character']['profile']);
+		$t_data['Character']['money'] = Character::moneyFormat($t_data['Character']['money']);
+		$t_data['Career']['profile'] = Career::profileFormat($t_data['Career']['profile']);
+*/
+		
+		$this->set('chars', $chars);
+//		$this->set('t_statsStr', ToolBox::statsStr());
+		  
+		  	
 		/*
 	    $t_data = $this->User->find('first', array(
 	    	'contain' => false,
@@ -57,8 +90,10 @@ class CharactersController extends AppController {
 			)
 	      ));		
 		  */
+		  
+		  
 	
-
+/*
     $user = $this->User->find('first', array(
         'conditions' => array('User.id' => $this->Auth->user('id'),
         ),
@@ -67,8 +102,8 @@ class CharactersController extends AppController {
     if (!$user) {
         throw new NotFoundException(__('Invalid user'));
     }
-
-
+*/
+/*
     $t_data = $this->Character->find('first', array(
         'conditions' => array('Character.user_id' => $user['User']['id'], 
                               'Character.campaign_id' => $user['User']['campaign_id']
@@ -98,12 +133,54 @@ class CharactersController extends AppController {
 
     $this->set('t_data', $t_data);
     $this->set('t_statsStr', ToolBox::statsStr());
-
+*/
 /*
     pr($user);
     pr($t_data);
 */
 	}
+
+  public function manage($id = null) {
+  	if (!$id || !preg_match("#^[1-9]+[0-9]*$#", $id)) {
+    	throw new NotFoundException(__('Unknown character'));
+    }
+	
+    $char = $this->Character->find('first', array(
+        'conditions' => array(
+        	'Character.user_id' => $this->Auth->user('id'),
+        	'Character.id' => $id
+		),
+
+        'contain' => array(
+            'Race',
+            'Career',
+            'Rank',
+            'Campaign',
+            'Area',           
+            'CharactersSkillsSkillspec' => array(
+              'Skill',
+              'Skillspec'
+            ),
+            'CharactersTalentsTalentspec' => array(
+              'Talent',
+              'Talentspec'
+            ),
+
+         )
+     ));
+	 if (!$char) {
+     	throw new NotFoundException(__('Unknown character'));
+     }
+	
+	// TODO Use XML format
+    $char['Character']['profile'] = Character::profileFormat($char['Character']['profile']);
+    $char['Character']['money'] = Character::moneyFormat($char['Character']['money']);
+    $char['Career']['profile'] = Career::profileFormat($char['Career']['profile']);
+
+    $this->set('char', $char);
+    $this->set('t_statsStr', ToolBox::statsStr());	 
+	 
+  }
 
   /**
    * view method
@@ -172,7 +249,7 @@ class CharactersController extends AppController {
    * @return void
    */
   public function gm_skilltest($id = null) {
-  	if (!$id || !preg_match("#^[1-9]+$#", $id)) {
+  	if (!$id || !preg_match("#^[1-9]+[0-9]*$#", $id)) {
     	throw new NotFoundException(__('Invalid character'));
     }
 /*
