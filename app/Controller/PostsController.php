@@ -50,77 +50,28 @@ class PostsController extends AppController {
 	return $str;
   }
 
-    public function index() {
-    	$user = $this->User->find('first', array(
-	        'conditions' => array('User.id' => $this->Auth->user('id'),
-	        ),
-	        'contain' => false
-	      ));
-	    if (!$user) {
-	        throw new NotFoundException(__('Invalid user'));
+    public function index($campaign_id = null, $area_id = null) {
+	  	if (!$campaign_id || !$area_id || 
+	  		!preg_match("#^[1-9]+[0-9]*$#", $campaign_id) || 
+	  		!preg_match("#^[1-9]+[0-9]*$#", $area_id)) {
+	    	throw new NotFoundException(__('Unknown area and/or campaign'));
 	    }
-		
-    	$char = $this->Character->find('first', array(
-        'conditions' => array('Character.user_id' => $user['User']['id'], 
-                              'Character.campaign_id' => $user['User']['campaign_id']
-        ),
 
-        'contain' => array(
-            'Race',
-            'Career',
-            'Rank',
-            'CharactersSkillsSkillspec' => array(
-              'Skill',
-              'Skillspec'
-            ),
-         )
-
-      ));
-
-    	 if ($this->request->is('post')) {
-    	 	$config = HTMLPurifier_Config::createDefault();
-    	 	$purifier = new HTMLPurifier($config);
-
-			$dirty_html = $this->request->data['Post']['content'];
-			pr($dirty_html);
-			$dirty_html = $purifier->purify($dirty_html);
-//			$dirty_html = preg_replace('#\[d100\]#', ToolBox::rollDice('1d100'), $dirty_html, 1, $count);
-			if(preg_match('#\[d100\]#', $dirty_html)) {
-				$dirty_html = $char['Character']['name'].' '.__('throws 1d100 and gets'). ' '.ToolBox::rollDice('1d100');
-			}
-            pr($dirty_html);
-        }
-         $this->set('posts', $this->Post->find('all'));
- /*
-	    $user = $this->User->find('first', array(
-	        'conditions' => array('User.id' => $this->Auth->user('id'),
-	        ),
-	        'contain' => false
-	      ));
-	    if (!$user) {
-	        throw new NotFoundException(__('Invalid user'));
+		$this->paginate = array(
+		    'conditions' => array(
+		    	'Post.campaign_id' => $campaign_id,
+		    	'Post.area_id' => $area_id
+			),
+		    'limit' => 5
+		);
+		$posts = $this->paginate('Post');
+	    if (!$posts) {
+	        throw new NotFoundException(__('No posts'));
 	    }
-	
-		$t_data = $this->Post->find('all', array(
-	        'conditions' => array('Post.area_id' => $user['User']['area_id']
-	        ),
-	
-	        'contain' => array(
-	            'Race',
-	            'Career',
-	            'Rank',
-	            'CharactersSkillsSkillspec' => array(
-	              'Skill',
-	              'Skillspec'
-	            ),
-	            'CharactersTalentsTalentspec' => array(
-	              'Talent',
-	              'Talentspec'
-	            ),
-	         )
-	
-		));
-  * */
+
+        $this->set('posts', $posts);
+		$this->set('campaign_id', $campaign_id);
+		$this->set('area_id', $area_id);
     }
 
     public function view($id = null) {
@@ -135,15 +86,36 @@ class PostsController extends AppController {
         $this->set('post', $post);
     }
 
-    public function add() {
+    public function add($campaign_id = null, $area_id = null) {
+	  	if (!$campaign_id || !$area_id || 
+	  		!preg_match("#^[1-9]+[0-9]*$#", $campaign_id) || 
+	  		!preg_match("#^[1-9]+[0-9]*$#", $area_id)) {
+	    	throw new NotFoundException(__('Unknown area and/or campaign'));
+	    }
+			
         if ($this->request->is('post')) {
-            $this->Post->create();
-            if ($this->Post->save($this->request->data)) {
-                $this->Session->setFlash('Your post has been saved.');
-                $this->redirect(array('action' => 'index'));
-            } else {
-                $this->Session->setFlash('Unable to add your post.');
-            }
+			$input = h($this->request->data['Post']['content']);
+			
+			$this->Post->create();
+			
+			$xmlPost = Xml::build('<?xml version="1.0"?><root></root>');
+			$xmlPost->addChild('name', $char != null ? $char['Character']['name'] : __('GM'));
+			$xmlPost->addChild('race', $char['Race']['name']);
+			$xmlPost->addChild('career', $char['Career']['name']);
+			$xmlPost->addChild('rank', $char['Rank']['name']);
+			$xmlPost->addChild('gender', $char['Character']['gender']);
+			$xmlPost->addChild('text', $input);
+			
+			if($this->Post->save(array(
+					'body' => $xmlPost->asXML(), 
+					'character_id' => $char != null ? $char['Character']['id'] : 0,
+					'area_id' => $char['Character']['area_id'],
+					'campaign_id' => $user['User']['campaign_id'],						
+				))) {
+				$this->Session->setFlash(__('Action performed.'));
+			} else {
+				$this->Session->setFlash(__('Unable to post.'));
+			}
         }
     }
 

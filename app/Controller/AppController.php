@@ -33,7 +33,7 @@ App::uses('Controller', 'Controller');
  */
 class AppController extends Controller {
 
-	public $viewClass = 'Smarty';
+//	public $viewClass = 'Smarty';
 
     public $components = array(
         'DebugKit.Toolbar',
