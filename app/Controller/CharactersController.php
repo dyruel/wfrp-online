@@ -82,12 +82,11 @@ class CharactersController extends AppController {
    * @return void
    */
   public function view($id = null) {
-    if (!$id) {
+  	if (!$id || !preg_match("#^[1-9]+[0-9]*$#", $id)) {
         throw new NotFoundException(__('Unknown character'));
     }
 
-
-    $t_data = $this->Character->find('first', array(
+    $char = $this->Character->find('first', array(
         'conditions' => array('Character.id' => $id
         ),
 
@@ -107,15 +106,15 @@ class CharactersController extends AppController {
 
       ));
 
-    if (!$t_data) {
+    if (!$char) {
         throw new NotFoundException(__('Unknown character'));
     }
 
-    $t_data['Character']['profile'] = Character::profileFormat($t_data['Character']['profile']);
-    $t_data['Character']['money'] = Character::moneyFormat($t_data['Character']['money']);
-    $t_data['Career']['profile'] = Career::profileFormat($t_data['Career']['profile']);
+    $char['Character']['profile'] = Character::profileFormat($char['Character']['profile']);
+    $char['Character']['money'] = Character::moneyFormat($char['Character']['money']);
+    $char['Career']['profile'] = Career::profileFormat($char['Career']['profile']);
 
-    $this->set('t_data', $t_data);
+    $this->set('t_data', $char);
     $this->set('t_statsStr', ToolBox::statsStr());
   }
 
@@ -141,34 +140,37 @@ class CharactersController extends AppController {
 */
 //	pr($user);
     $char = $this->Character->find('first', array(
-        'conditions' => array('Character.id' => $id,
-        ),
+        'conditions' => array(
+        	'Character.id' => $id,
+        	'Campaign.user_id' => $this->Auth->user('id')
+		),
 
         'contain' => array(
             'Race',
             'Career',
             'Rank',
-            'CharactersSkillsSkillspec' => array(
-              'Skill',
-              'Skillspec'
-            ),
+            'Campaign',
          )
 
      ));
-//	 pr($char);
+    if (!$char) {
+        throw new NotFoundException(__('Unknown character'));
+    }
+//	pr($char);
 	  
-    $baseSkills = $this->Skill->find('all', array(
-        'conditions' => array('Skill.type' => '0'
-        )
-     ));	  
-//	pr($chars);
+    $skills = $this->Skill->find('all');	  
+	pr($skills);
+	
+	foreach($skills as $skill) {
+		
+	}
 
 	if($this->request->is('post')) {
 		pr($this->request->data);
 	}
 	
 	$this->set('char', $char);
-	$this->set('baseSkills', $baseSkills);
+	$this->set('skills', $skills);
   }
 
   /**

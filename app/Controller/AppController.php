@@ -47,31 +47,23 @@ class AppController extends Controller {
             'loginAction' => array('gm' => false, 'controller' => 'users', 'action' => 'login'),
             'loginRedirect' => array('gm' => false, 'controller' => 'campaigns', 'action' => 'index'),
             'logoutRedirect' => array('gm' => false, 'controller' => 'users', 'action' => 'login'),
-            'authorize' => 'Controller'
+//            'authorize' => 'Controller'
         )
     );
 
     public function beforeFilter() {
 //        $this->Auth->allow('home');
     }
-	
+	/*
 	public function isAuthorized($user = null) {
-
-        // Any registered user can access public functions
         if (empty($this->request->params['gm'])) {
             return true;
         }
- /*       
-        // Only pcs can access pcs functions
-        if (isset($this->request->params['pc'])) {
-            return (bool)($user['ACampaign']['user_id'] !== $user['id']);
-        }
-	*/	
-        // Only gms can access gm functions
+
         if (isset($this->request->params['gm'])) {
             return (bool)($user['ACampaign']['user_id'] === $user['id']);
         }
-        // Default deny
         return false;
     }
+	 */
 }
