@@ -1,7 +1,7 @@
 
 <?php echo $this->Session->flash('auth'); ?>
 
-<div style="width:166px; margin:auto; padding-top: 200px;">
+<div style="width:166px; margin:auto;">
 
 	<div >
     <p><?php /*echo __('Please enter your username and password');*/ ?></p>

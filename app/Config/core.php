@@ -113,7 +113,7 @@
  *
  */
 
-Configure::write('Routing.prefixes', array('gm', 'pc'));
+Configure::write('Routing.prefixes', array('gm'));
 
 /**
  * Turn off all caching application-wide.
